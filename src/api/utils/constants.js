@@ -1,0 +1,98 @@
+module.exports = {
+  caseCreation: {
+    fullRelease: {
+      key: 'fullRelease',
+      origin: 'Release',
+      category1: 'Full Release',
+      category2: 'Payment Received & Release Call initiated',
+      recordType: 'Release',
+      attributeType: 'Case',
+      ledgerAttributeType: 'General_Ledger__c',
+    },
+    renewal: {
+      key: 'renewal',
+      origin: 'Renewal',
+      category1: 'Renewal',
+      status: {
+        success: 'Renewal Request-Success',
+        pending: 'Renewal Request - Non Success',
+        failure: 'Renewal Request - Non Success',
+        manual: 'Renewal Request - Non Success',
+      },
+      recordType: {
+        success: 'Renewal',
+        pending: 'Renewal Non Success',
+        failure: 'Renewal Non Success',
+        manual: 'Renewal Non Success',
+      },
+      attributeType: 'Case',
+      ledgerAttributeType: 'General_Ledger__c',
+      orderAutomationState: {
+        automated: 'Automated',
+        manual: 'Manual',
+        automationCompleted: 'Automation Completed',
+        automationFailed: 'Automation Failed',
+      },
+    },
+    loanEnhancement: {
+      key: 'loanEnhancement',
+      origin: 'Loan Enhancement',
+      category1: 'Loan Enhancement',
+      status: {
+        success: 'Disbursal Requested - Digital LE',
+        failure: 'LE Request - Non Success',
+        pending: 'LE Request - Non Success',
+        manual: 'Request Initiated - Manual LE',
+      },
+      recordType: {
+        success: 'LE Digital Sign Success',
+        failure: 'LE Digital Sign Non Success',
+        pending: 'LE Digital Sign Non Success',
+        manual: 'LE Digital Sign Manual',
+      },
+      signingStatus: {
+        success: 'Success',
+        failure: 'Failure',
+        pending: 'Pending',
+      },
+      pennyTestingStatus: {
+        pending: 'Pending',
+        failure: 'Failure',
+        success: 'Success',
+        manual: 'Manual',
+        NA: 'NA',
+      },
+      otpConsentStatus: {
+        true: 'Success',
+        false: 'Failure',
+      },
+      attributeType: 'Case',
+      ledgerAttributeType: 'General_Ledger__c',
+    },
+    partReleaseAttributes: {
+      partPayment: {
+        key: 'partPayment',
+        status: 'Part Payment Received',
+        origin: 'Part Release',
+        category1: 'Part Payment Received',
+        category2: 'Part Payment Received',
+        recordType: 'PR Part Payment',
+      },
+      partRelease: {
+        key: 'partRelease',
+        status: 'Part Payment Received',
+        origin: 'Part Release',
+        category1: 'Part Payment Received',
+        category2: 'Part Payment Received',
+        recordType: 'PR Part Payment',
+        rupeekQuick: {
+          origin: 'Part Release',
+          category1: 'Part Release',
+          category2: 'Part Release initiated',
+          status: 'Part Release initiated',
+          recordType: 'Part Release',
+        },
+      },
+    },
+  },
+};

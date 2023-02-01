@@ -1,0 +1,89 @@
+{
+  "name": "notificationservice",
+  "version": "1.0.0",
+  "description": "In house service to send notifications",
+  "main": "src/index.js",
+  "private": true,
+  "scripts": {
+    "start": "node ./src/index.js",
+    "dev": "node ./src/index.js",
+    "worker:email": "node ./src/workers/email.js",
+    "worker:push": "node ./src/workers/push.js",
+    "worker:sms": "node ./src/workers/sms.js",
+    "worker:ticket": "node ./src/workers/ticket.js",
+    "worker:webhook": "node ./src/workers/webhook.js",
+    "docs": "apidoc -i src -o docs",
+    "lint": "eslint '**/*.js'",
+    "lint:fix": "npm run lint -- --fix",
+    "test": "jest --config ./jest.config.js",
+    "test:coverage": "jest --coverage",
+    "test:watch": "jest --verbose --watchAll",
+    "postdocs": "open-cli docs/index.html",
+    "docker:start": "pm2-runtime ecosystem.json"
+  },
+  "keywords": [
+    "notificationservice"
+  ],
+  "author": "Srikanth Indrakanti",
+  "license": "ISC",
+  "engines": {
+    "node": ">=14.9.3"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint",
+      "pre-push": "npm run lint"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:Rupeekapp/sangraha.git"
+  },
+  "dependencies": {
+    "@slack/web-api": "^5.11.0",
+    "aws-sdk": "^2.639.0",
+    "axios": "^0.27.2",
+    "bluebird": "^3.7.2",
+    "body-parser": "^1.19.0",
+    "celebrate": "^12.0.1",
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
+    "dotenv-safe": "^8.2.0",
+    "dynamoose": "^2.8.5",
+    "express": "^4.17.1",
+    "express-winston": "^4.0.3",
+    "googleapis": "^92.0.0",
+    "helmet": "^3.21.3",
+    "http-status": "^1.4.2",
+    "jest": "^26.1.0",
+    "lodash": "^4.17.15",
+    "method-override": "^3.0.0",
+    "moment": "^2.24.0",
+    "mongoose": "^6.5.2",
+    "mustache": "^4.0.0",
+    "newrelic": "^9.0.1",
+    "node-telegram-bot-api": "^0.40.0",
+    "order-id": "^1.1.0",
+    "passport": "^0.6.0",
+    "passport-http": "^0.3.0",
+    "pm2": "^4.2.3",
+    "qs": "^6.10.1",
+    "sqs-consumer": "^5.4.0",
+    "triple-beam": "^1.3.0",
+    "twilio": "^3.40.0",
+    "uuid": "^8.3.1",
+    "uuid-apikey": "^1.4.6",
+    "winston": "^3.2.1",
+    "winston-daily-rotate-file": "^4.4.2",
+    "xml2js": "^0.4.23"
+  },
+  "devDependencies": {
+    "apidoc": "^0.52.0",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-plugin-import": "^2.20.1",
+    "husky": "^4.2.3",
+    "nodemon": "^2.0.2",
+    "open-cli": "^7.0.1"
+  }
+}

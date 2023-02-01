@@ -1,0 +1,33 @@
+{
+  "apps": [{
+    "name": "notification",
+    "script": "./src/index.js",
+    "instances": 1,
+    "exec_mode": "cluster"
+  }, {
+    "name": "worker-sms",
+    "script": "./src/workers/sms.js",
+    "instances": 1,
+    "exec_mode": "cluster"
+  }, {
+    "name": "worker-push",
+    "script": "./src/workers/push.js",
+    "instances": 1,
+    "exec_mode": "cluster"
+  }, {
+    "name": "worker-email",
+    "script": "./src/workers/email.js",
+    "instances": 1,
+    "exec_mode": "cluster"
+  }, {
+    "name": "worker-ticket",
+    "script": "./src/workers/ticket.js",
+    "instances": 1,
+    "exec_mode": "cluster"
+  }, {
+    "name": "worker-webhook",
+    "script": "./src/workers/webhook.js",
+    "instances": 1,
+    "exec_mode": "cluster"
+  }]
+}
