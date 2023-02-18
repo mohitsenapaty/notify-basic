@@ -1,6 +1,6 @@
 const httpStatus = require('http-status');
 const moment = require('moment');
-const NotificationCategory = require('../models/notificationcategory.model');
+const NotificationCategory = require('../../models/notificationcategory.model');
 
 /**
  * Create NotificationCategory
@@ -8,7 +8,7 @@ const NotificationCategory = require('../models/notificationcategory.model');
  */
 exports.create = async (req, res, next) => {
   try {
-    const notificationcategory = await NotificationCategory.create(req.body);
+    const notificationcategory = await NotificationCategory.createNotificationCategory(req.body);
     return res.status(httpStatus.CREATED).json({ code: httpStatus.CREATED, message: 'Notification Category created successfully', category: notificationcategory });
   } catch (error) {
     return next(error);
@@ -21,9 +21,8 @@ exports.create = async (req, res, next) => {
  */
 exports.read = async (req, res, next) => {
   try {
-    const notificationcategory = await NotificationCategory.findOne({
+    const notificationcategory = await NotificationCategory.get({
       _id: req.params.id,
-      archived: false,
     });
 
     if (notificationcategory) {
@@ -41,7 +40,10 @@ exports.read = async (req, res, next) => {
  */
 exports.list = async (req, res, next) => {
   try {
-    const notificationcategories = await NotificationCategory.find({ archived: false });
+    const notificationcategories = await NotificationCategory.scan({
+      archived: false,
+      name: { exists: true },
+    });
 
     return res.status(httpStatus.OK).json({ code: httpStatus.OK, message: 'Notification Category(s) fetched successfully', categories: notificationcategories });
   } catch (error) {
@@ -55,12 +57,9 @@ exports.list = async (req, res, next) => {
  */
 exports.update = async (req, res, next) => {
   try {
-    const notificationcategories = await NotificationCategory.findOneAndUpdate({
+    const notificationcategories = await NotificationCategory.updateNotificationCategory({
       _id: req.params.id,
-      archived: false,
-    }, req.body, {
-      new: true,
-    });
+    }, req.body);
 
     if (notificationcategories) {
       return res.status(httpStatus.OK).json({ code: httpStatus.OK, message: 'Notification Category updated successfully', category: notificationcategories });
@@ -77,9 +76,8 @@ exports.update = async (req, res, next) => {
  */
 exports.delete = async (req, res, next) => {
   try {
-    const notificationcategories = await NotificationCategory.findOneAndUpdate({
+    const notificationcategories = await NotificationCategory.updateNotificationCategory({
       _id: req.params.id,
-      archived: false,
     }, {
       archived: true,
       archivedAt: moment().toISOString(),

@@ -1,7 +1,7 @@
 const express = require('express');
 const { celebrate: validate } = require('celebrate');
 const { authorize, authorizeKey } = require('../../middlewares/auth');
-const controller = require('../../controllers/notificationtype.controller');
+const controller = require('../../controllers/v1/notificationtype.controller');
 const {
   create,
   read,
@@ -28,7 +28,7 @@ router
    * @apiError (Unauthorized 401)  Unauthorized  Only authenticated users can access the data
    * @apiError (Forbidden 403)     Forbidden     Only admin can access the data
    */
-  .post(validate(create), controller.create);
+  .post(validate(create), authorizeKey(), controller.create);
 
 router
   .route('/')
@@ -85,7 +85,7 @@ router
    * @apiError (Unauthorized 401)  Unauthorized  Only authenticated users can access the data
    * @apiError (Forbidden 403)     Forbidden     Only admin can access the data
    */
-  .put(validate(update), authorize(['admin']), controller.update);
+  .patch(validate(update), authorizeKey(), controller.update);
 
 router
   .route('/:id')
@@ -104,6 +104,6 @@ router
    * @apiError (Unauthorized 401)  Unauthorized  Only authenticated users can access the data
    * @apiError (Forbidden 403)     Forbidden     Only admin can access the data
    */
-  .delete(validate(remove), authorize(['admin']), controller.delete);
+  .delete(validate(remove), authorizeKey(), controller.delete);
 
 module.exports = router;

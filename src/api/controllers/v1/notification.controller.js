@@ -1,11 +1,11 @@
 const httpStatus = require('http-status');
 const moment = require('moment');
-const Notification = require('../models/notification.model');
-const NotificationStatus = require('../models/notificationstatus.model');
-const SNSService = require('../services/sns.service');
-const { logger } = require('../../config/logger');
-const APIError = require('../utils/APIError');
-const { maxRetryAttempt, awsConfig } = require('../../config/vars');
+const Notification = require('../../models/notification.model');
+// const NotificationStatus = require('../../models/notificationstatus.model');
+const SNSService = require('../../services/sns.service');
+const { logger } = require('../../../config/logger');
+const APIError = require('../../utils/APIError');
+const { maxRetryAttempt, awsConfig } = require('../../../config/vars');
 
 /**
  * Read Notification
@@ -13,24 +13,15 @@ const { maxRetryAttempt, awsConfig } = require('../../config/vars');
  */
 exports.read = async (req, res, next) => {
   try {
-    const statuses = await NotificationStatus.find({
-      name: { $in: ['processing', 'success', 'failure', 'cancelled'] },
-      archived: false,
-    });
-    const statusMap = statuses.reduce((result, item) => {
-      result[item.name] = item.id; // eslint-disable-line no-param-reassign
-      return result;
-    }, {});
-
     const notification = await Notification
       .findOne({
         _id: req.params.id,
         client: req.user.id,
-      })
-      .populate('category provider status template type');
+      });
 
     if (notification) {
-      const transformedData = await notification.fetchDetails(statusMap);
+      // const transformedData = await notification.fetchDetails(statusMap);
+      const transformedData = notification;
       return res.status(httpStatus.OK).json({ code: httpStatus.OK, message: 'Notification fetched successfully', notification: transformedData });
     }
     return res.status(httpStatus.NOT_FOUND).json({ code: httpStatus.NOT_FOUND, message: 'Resource not found' });
@@ -39,6 +30,7 @@ exports.read = async (req, res, next) => {
   }
 };
 
+/*
 exports.retry = async (req, res, next) => {
   try {
     logger.info(`Retrying notification with id: ${req.params.id}`);
@@ -110,3 +102,4 @@ exports.retry = async (req, res, next) => {
     return next(error);
   }
 };
+*/

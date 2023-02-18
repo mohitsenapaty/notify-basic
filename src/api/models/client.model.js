@@ -70,7 +70,7 @@ clientModel.methods.set("updateClient", async function(query, data, resetKey = f
   return client;
 });
 
-clientModel.methods.document.set("verifyAPIKey", async(key) => {
+clientModel.methods.item.set("verifyAPIKey", async function (key) {
   return uuidAPIKey.check(key, this.apikey);
 });
 

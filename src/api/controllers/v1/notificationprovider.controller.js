@@ -1,7 +1,7 @@
 const httpStatus = require('http-status');
 const moment = require('moment');
-const NotificationProvider = require('../models/notificationprovider.model');
-const NotificationType = require('../models/notificationtype.model');
+const NotificationProvider = require('../../models/notificationprovider.model');
+const NotificationType = require('../../models/notificationtype.model');
 
 /**
  * Create NotificationProvider
@@ -9,16 +9,19 @@ const NotificationType = require('../models/notificationtype.model');
  */
 exports.create = async (req, res, next) => {
   try {
-    const notificationtype = await NotificationType.findOne({
-      _id: req.body.type,
-      archived: false,
+    const notificationtype = await NotificationType.get({
+      _id: req.body.type
     });
     if (!notificationtype) {
       return res.status(httpStatus.BAD_REQUEST).json({ code: httpStatus.BAD_REQUEST, message: 'Notification Type is invalid' });
     }
 
-    const notificationprovider = await NotificationProvider.create(req.body);
-    return res.status(httpStatus.CREATED).json({ code: httpStatus.CREATED, message: 'Notification Provider created successfully', provider: notificationprovider });
+    const notificationprovider = await NotificationProvider.createNotificationProvider(req.body);
+    return res.status(httpStatus.CREATED).json({
+      code: httpStatus.CREATED,
+      message: 'Notification Provider created successfully',
+      provider: notificationprovider,
+    });
   } catch (error) {
     return next(error);
   }
@@ -30,9 +33,8 @@ exports.create = async (req, res, next) => {
  */
 exports.read = async (req, res, next) => {
   try {
-    const notificationprovider = await NotificationProvider.findOne({
+    const notificationprovider = await NotificationProvider.get({
       _id: req.params.id,
-      archived: false,
     }).populate('type');
 
     if (notificationprovider) {
@@ -50,7 +52,10 @@ exports.read = async (req, res, next) => {
  */
 exports.list = async (req, res, next) => {
   try {
-    const notificationproviders = await NotificationProvider.find({ archived: false }).populate('type');
+    const notificationproviders = await NotificationProvider.scan({
+      archived: false,
+      name: {exists: true},
+    }).exec();
 
     return res.status(httpStatus.OK).json({ code: httpStatus.OK, message: 'Notification Provider(s) fetched successfully', providers: notificationproviders });
   } catch (error) {
@@ -64,9 +69,8 @@ exports.list = async (req, res, next) => {
  */
 exports.update = async (req, res, next) => {
   try {
-    const notificationprovider = await NotificationProvider.findOneAndUpdate({
+    const notificationprovider = await NotificationProvider.updateNotificationProvider({
       _id: req.params.id,
-      archived: false,
     }, req.body, {
       new: true,
     });
@@ -86,12 +90,11 @@ exports.update = async (req, res, next) => {
  */
 exports.delete = async (req, res, next) => {
   try {
-    const notificationprovider = await NotificationProvider.findOneAndUpdate({
+    const notificationprovider = await NotificationProvider.updateNotificationProvider({
       _id: req.params.id,
-      archived: false,
     }, {
       archived: true,
-      archivedAt: moment().toISOString(),
+      archivedAt: moment().valueOf(),
     });
 
     if (notificationprovider) {

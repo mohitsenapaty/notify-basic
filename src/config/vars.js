@@ -16,10 +16,13 @@ module.exports = {
   maxRetryAttempt: process.env.MAX_RETRY_ATTEMPT || 5,
   dynamoConfig: {
     aws: {
-        accessKeyId: 'test',
-        secretAccessKey: 'test',
-        region: 'ap-south-1'
-    }
+      accessKeyId: process.env.AWS_ACCESS,
+      secretAccessKey: process.env.AWS_SECRET,
+      region: 'ap-south-1'
+    },
+    local: {
+      url: process.env.DYNAMOURL,
+    },
   },
   urls: {
     webhook: {
@@ -30,7 +33,7 @@ module.exports = {
     },
     identity: {
       endpoint: process.env.IDENTITY_URI,
-      jwtvalidate: '/api/v1/auth/jwtvalidate',
+      jwtvalidate: '/api/v1/user/jwtvalidate',
     },
   },
   awsConfig: {

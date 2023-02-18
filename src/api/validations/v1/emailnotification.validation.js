@@ -4,7 +4,7 @@ module.exports = {
   // POST /api/v1/notifications/email
   create: {
     [Segments.BODY]: {
-      customer: {
+      user: {
         id: Joi.string().regex(/^[a-fA-F0-9]{24}$/),
         email: Joi.string(),
       },
@@ -16,8 +16,8 @@ module.exports = {
         data: Joi.object().required(),
       },
       debug: Joi.boolean(),
-      correlationid: Joi.string(),
-      callbackurl: Joi.string(),
+      referenceid: Joi.string(),
+      callbackurl: Joi.object().unknown(true),
       options: {
         subject: Joi.string().required(),
         cc: Joi.array().items(Joi.string()),

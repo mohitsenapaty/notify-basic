@@ -23,6 +23,7 @@ module.exports = {
     [Segments.BODY]: {
       name: Joi.string().alphanum().min(3).max(50),
       description: Joi.string().allow(''),
+      archived: Joi.boolean(),
     },
   },
   // DELETE /api/v1/types/:id

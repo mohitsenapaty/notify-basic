@@ -1,4 +1,7 @@
 const AWS = require('aws-sdk');
+const { dynamoConfig } = require('../../config/vars');
+
+AWS.config.update(dynamoConfig.aws);
 
 const sns = new AWS.SNS();
 

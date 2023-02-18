@@ -1,7 +1,7 @@
 const express = require('express');
 const { celebrate: validate } = require('celebrate');
 const { authorize, authorizeKey } = require('../../middlewares/auth');
-const controller = require('../../controllers/notificationcategory.controller');
+const controller = require('../../controllers/v1/notificationcategory.controller');
 const {
   create,
   read,
@@ -28,7 +28,7 @@ router
    * @apiError (Unauthorized 401)  Unauthorized  Only authenticated users can access the data
    * @apiError (Forbidden 403)     Forbidden     Only admin can access the data
    */
-  .post(validate(create), authorize(['admin']), controller.create);
+  .post(validate(create), authorizeKey(), controller.create);
 
 router
   .route('/')

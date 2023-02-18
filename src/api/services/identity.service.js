@@ -15,7 +15,7 @@ exports.jwtvalidate = async (headers) => {
     const response = await axios(options);
     return {
       ...response.data.user,
-      roles: map(response.data.user.roles, (role) => role.name),
+      // roles: map(response.data.user.roles, (role) => role.name),
     };
   } catch (e) {
     throw new APIError({

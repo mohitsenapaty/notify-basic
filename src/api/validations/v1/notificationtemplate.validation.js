@@ -4,7 +4,7 @@ module.exports = {
   // POST /api/v1/templates
   create: {
     [Segments.BODY]: {
-      name: Joi.string().alphanum().min(3).max(50)
+      name: Joi.string().min(3).max(50)
         .required(),
       description: Joi.string().allow(''),
       category: Joi.string().regex(/^[a-fA-F0-9]{24}$/).required(),

@@ -1,6 +1,6 @@
 const httpStatus = require('http-status');
 const moment = require('moment');
-const NotificationType = require('../models/notificationtype.model');
+const NotificationType = require('../../models/notificationtype.model');
 
 /**
  * Create NotificationType
@@ -8,8 +8,10 @@ const NotificationType = require('../models/notificationtype.model');
  */
 exports.create = async (req, res, next) => {
   try {
-    const notificationtype = await NotificationType.create(req.body);
-    return res.status(httpStatus.CREATED).json({ code: httpStatus.CREATED, message: 'Notification Type created successfully', type: notificationtype });
+    const notificationtype = await NotificationType.createNotificationType(req.body);
+    return res.status(httpStatus.CREATED).json({
+      code: httpStatus.CREATED, message: 'Notification Type created successfully', type: notificationtype
+    });
   } catch (error) {
     return next(error);
   }
@@ -21,15 +23,18 @@ exports.create = async (req, res, next) => {
  */
 exports.read = async (req, res, next) => {
   try {
-    const notificationtype = await NotificationType.findOne({
+    const notificationtype = await NotificationType.get({
       _id: req.params.id,
-      archived: false,
     });
 
     if (notificationtype) {
-      return res.status(httpStatus.OK).json({ code: httpStatus.OK, message: 'Notification Type fetched successfully', type: notificationtype });
+      return res.status(httpStatus.OK).json({
+        code: httpStatus.OK, message: 'Notification Type fetched successfully', type: notificationtype
+      });
     }
-    return res.status(httpStatus.NOT_FOUND).json({ code: httpStatus.NOT_FOUND, message: 'Resource not found' });
+    return res.status(httpStatus.NOT_FOUND).json({
+      code: httpStatus.NOT_FOUND, message: 'Resource not found'
+    });
   } catch (error) {
     return next(error);
   }
@@ -41,7 +46,10 @@ exports.read = async (req, res, next) => {
  */
 exports.list = async (req, res, next) => {
   try {
-    const notificationtypes = await NotificationType.find({ archived: false });
+    const notificationtypes = await NotificationType.scan({
+      archived: false,
+      name: { exists: true},
+    }).exec();
 
     return res.status(httpStatus.OK).json({ code: httpStatus.OK, message: 'Notification Type(s) fetched successfully', types: notificationtypes });
   } catch (error) {
@@ -55,12 +63,9 @@ exports.list = async (req, res, next) => {
  */
 exports.update = async (req, res, next) => {
   try {
-    const notificationtype = await NotificationType.findOneAndUpdate({
+    const notificationtype = await NotificationType.updateNotificationType({
       _id: req.params.id,
-      archived: false,
-    }, req.body, {
-      new: true,
-    });
+    }, req.body);
 
     if (notificationtype) {
       return res.status(httpStatus.OK).json({ code: httpStatus.OK, message: 'Notification Type updated successfully', type: notificationtype });
@@ -77,12 +82,11 @@ exports.update = async (req, res, next) => {
  */
 exports.delete = async (req, res, next) => {
   try {
-    const notificationtype = await NotificationType.findOneAndUpdate({
+    const notificationtype = await NotificationType.updateNotificationType({
       _id: req.params.id,
-      archived: false,
     }, {
       archived: true,
-      archivedAt: moment().toISOString(),
+      archivedAt: moment().valueOf(),
     });
 
     if (notificationtype) {

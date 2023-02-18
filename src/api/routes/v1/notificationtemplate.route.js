@@ -1,7 +1,7 @@
 const express = require('express');
 const { celebrate: validate } = require('celebrate');
 const { authorize, authorizeKey } = require('../../middlewares/auth');
-const controller = require('../../controllers/notificationtemplate.controller');
+const controller = require('../../controllers/v1/notificationtemplate.controller');
 const {
   create,
   read,
