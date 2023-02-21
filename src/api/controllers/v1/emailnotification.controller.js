@@ -51,10 +51,10 @@ exports.create = async (req, res, next) => {
     const content = await template.render(req.body.template.data);
     const notification = await Notification.createNotification({
       ...omit(req.body, ['options', 'user', 'template']),
-      client: req.user.id,
+      client: req.user._id,
       content,
       template: req.body.template.id,
-      user: req.body.user._id,
+      user: req.user._id,
       specifics: {
         ...req.body.options,
         email: req.body.user.email,
